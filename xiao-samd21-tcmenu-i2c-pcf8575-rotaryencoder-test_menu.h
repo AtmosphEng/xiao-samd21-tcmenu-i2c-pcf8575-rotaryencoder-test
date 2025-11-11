@@ -20,14 +20,15 @@
 
 // variables we declare that you may need to access
 extern const PROGMEM ConnectorLocalInfo applicationInfo;
-extern U8G2_SSD1306_128X64_NONAME_F_SW_I2C gfx;
+extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx;
 extern U8g2Drawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
 
 // Any externals needed by IO expanders, EEPROMs etc
-extern IoAbstractionRef ioexp_myExpansion;
+extern IoAbstractionRef ioexp_myI2CExpansion;
 
 // Global Menu Item exports
+extern AnalogMenuItem menuTcmUpSeconds;
 extern AnalogMenuItem menuNewAnalogItem;
 extern BooleanMenuItem menuTcmMyLED;
 
@@ -39,5 +40,6 @@ void setupMenu();
 #define CALLBACK_FUNCTION
 
 void CALLBACK_FUNCTION onChangeTcmMyLED(int id);
+void CALLBACK_FUNCTION onChangeTcmUpSeconds(int id);
 
 #endif // MENU_GENERATED_CODE_H
