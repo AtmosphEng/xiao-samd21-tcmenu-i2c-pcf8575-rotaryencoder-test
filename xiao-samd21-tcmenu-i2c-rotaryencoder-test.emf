@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "projectName": "xiao-samd21-tcmenu-i2c-pcf8575-rotaryencoder-test\nnew test MCP23017\t\t",
+  "projectName": "xiao-samd21-tcmenu-i2c-rotaryencoder-test - platformio\ntest : i2c EXPANSION enabled",
   "author": "localuser",
   "items": [
     {
@@ -25,7 +25,7 @@
       "type": "analogItem",
       "defaultValue": "0",
       "item": {
-        "maxValue": 255,
+        "maxValue": 65535,
         "offset": 0,
         "divisor": 1,
         "unitName": "",
@@ -45,7 +45,7 @@
       "type": "analogItem",
       "defaultValue": "0",
       "item": {
-        "maxValue": 255,
+        "maxValue": 65535,
         "offset": 0,
         "divisor": 1,
         "unitName": "",
@@ -71,7 +71,7 @@
     ],
     "lastThemeUuid": "396ED4DF-AD7B-4951-A848-A9E5838A549B",
     "applicationUUID": "f5a35aa5-3ae6-46fe-900a-7d6749bd049c",
-    "applicationName": "samd21 251111 1937",
+    "applicationName": "samd21p 260112 2045",
     "lastProperties": [
       {
         "name": "DISPLAY_VARIABLE",
@@ -205,12 +205,13 @@
       }
     ],
     "namingRecursive": true,
-    "useCppMain": false,
-    "saveLocation": "ALL_TO_CURRENT",
+    "useCppMain": true,
+    "saveLocation": "PROJECT_TO_SRC_WITH_GENERATED",
     "usingSizedEEPROMStorage": false,
     "eepromDefinition": "",
     "authenticatorDefinition": "",
     "projectIoExpanders": [
+      "pcf8574:my8575Expansion:39:2:false",
       "mcp23017:myI2CExpansion:32:2",
       "deviceIO:"
     ],

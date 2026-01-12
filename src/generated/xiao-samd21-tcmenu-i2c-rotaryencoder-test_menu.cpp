@@ -8,23 +8,24 @@
     use elsewhere.
  */
 
-// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2025-11-11T11:37:34.957302300Z.
+// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2026-01-12T12:45:36.769450800Z.
 
 #include <tcMenu.h>
-#include "xiao-samd21-tcmenu-i2c-pcf8575-rotaryencoder-test_menu.h"
-#include "ThemeMonoInverseBuilder.h"
+#include "xiao-samd21-tcmenu-i2c-rotaryencoder-test_menu.h"
+#include "../ThemeMonoInverseBuilder.h"
 
 // Global variable declarations
-const  ConnectorLocalInfo applicationInfo = { "samd21 251111 1953*", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
+const  ConnectorLocalInfo applicationInfo = { "samd21p 260112 2045", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
+IoAbstractionRef ioexp_my8575Expansion = ioFrom8574(0x27, 2);
 IoAbstractionRef ioexp_myI2CExpansion = ioFrom23017(0x20, ACTIVE_LOW_OPEN, 2);
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, 5, 4);
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
 
 // Global Menu Item declarations
-const AnalogMenuInfo minfoTcmUpSeconds = { "UpSeconds", 3, 0xffff, 255, onChangeTcmUpSeconds, 0, 1, "" };
+const AnalogMenuInfo minfoTcmUpSeconds = { "UpSeconds", 3, 0xffff, 65535, onChangeTcmUpSeconds, 0, 1, "" };
 AnalogMenuItem menuTcmUpSeconds(&minfoTcmUpSeconds, 0, nullptr, INFO_LOCATION_PGM);
-const AnalogMenuInfo minfoNewAnalogItem = { "New AnalogItem", 2, 0xffff, 255, NO_CALLBACK, 0, 1, "" };
+const AnalogMenuInfo minfoNewAnalogItem = { "New AnalogItem", 2, 0xffff, 65535, NO_CALLBACK, 0, 1, "" };
 AnalogMenuItem menuNewAnalogItem(&minfoNewAnalogItem, 0, &menuTcmUpSeconds, INFO_LOCATION_PGM);
 const BooleanMenuInfo minfoTcmMyLED = { "MyLED", 1, 0xffff, 1, onChangeTcmMyLED, NAMING_TRUE_FALSE };
 BooleanMenuItem menuTcmMyLED(&minfoTcmMyLED, false, &menuNewAnalogItem, INFO_LOCATION_PGM);
