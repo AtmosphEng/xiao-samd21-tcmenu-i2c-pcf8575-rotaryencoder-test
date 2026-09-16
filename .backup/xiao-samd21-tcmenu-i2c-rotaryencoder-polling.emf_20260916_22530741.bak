@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "projectName": "xiao-samd21-tcmenu-i2c-rotaryencoder-test - platformio\ntest : i2c EXPANSION enabled",
+  "projectName": "xiao-samd21-tcmenu-i2c-rotaryencoder-test - platformio\ntest : i2c EXPANSION enabled, polling",
   "author": "localuser",
   "items": [
     {
@@ -71,7 +71,7 @@
     ],
     "lastThemeUuid": "396ED4DF-AD7B-4951-A848-A9E5838A549B",
     "applicationUUID": "f5a35aa5-3ae6-46fe-900a-7d6749bd049c",
-    "applicationName": "samd21p 260112 2045",
+    "applicationName": "s21reIp 260916 2252",
     "lastProperties": [
       {
         "name": "DISPLAY_VARIABLE",
@@ -211,9 +211,9 @@
     "eepromDefinition": "",
     "authenticatorDefinition": "",
     "projectIoExpanders": [
-      "pcf8574:my8575Expansion:39:2:false",
       "mcp23017:myI2CExpansion:32:2",
-      "deviceIO:"
+      "deviceIO:",
+      "pcf8574:my8575Expansion:39:2:false"
     ],
     "menuInMenuCollection": {
       "menuDefinitions": []

@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "projectName": "xiao-samd21-tcmenu\ntest : direct rotary encoder",
+  "projectName": "xiao-samd21-tcmenu\ntest : ui input via button1",
   "author": "localuser",
   "items": [
     {
@@ -65,13 +65,13 @@
   "codeOptions": {
     "embeddedPlatform": "ARDUINO32",
     "lastDisplayUuid": "fd998437-c4b2-4386-ba88-d0ae7c20620b",
-    "lastInputUuid": "6dd87e7d-e751-4912-a70d-91793b1d3d87",
+    "lastInputUuid": "4F92CBC0-D13A-4090-9B86-C1952FE42D9B",
     "lastRemoteUuids": [
       "2c101fec-1f7d-4ff3-8d2b-992ad41e7fcb"
     ],
     "lastThemeUuid": "396ED4DF-AD7B-4951-A848-A9E5838A549B",
     "applicationUUID": "f5a35aa5-3ae6-46fe-900a-7d6749bd049c",
-    "applicationName": "s21reD 260916 2201",
+    "applicationName": "s21reD 260916 2204",
     "lastProperties": [
       {
         "name": "DISPLAY_VARIABLE",
@@ -139,28 +139,8 @@
         "subsystem": "INPUT"
       },
       {
-        "name": "ENCODER_PIN_A",
-        "latestValue": "9",
-        "subsystem": "INPUT"
-      },
-      {
-        "name": "ENCODER_PIN_B",
-        "latestValue": "8",
-        "subsystem": "INPUT"
-      },
-      {
-        "name": "ENCODER_PIN_OK",
-        "latestValue": "10",
-        "subsystem": "INPUT"
-      },
-      {
-        "name": "ENCODER_BACK_PIN",
-        "latestValue": "-1",
-        "subsystem": "INPUT"
-      },
-      {
-        "name": "ENCODER_NEXT_PIN",
-        "latestValue": "-1",
+        "name": "BUTTON_PIN",
+        "latestValue": "1",
         "subsystem": "INPUT"
       },
       {
@@ -169,8 +149,8 @@
         "subsystem": "INPUT"
       },
       {
-        "name": "ENCODER_IS_QUARTER_CYCLE",
-        "latestValue": "false",
+        "name": "DOUBLE_CLICK_THRESHOLD",
+        "latestValue": "350",
         "subsystem": "INPUT"
       },
       {

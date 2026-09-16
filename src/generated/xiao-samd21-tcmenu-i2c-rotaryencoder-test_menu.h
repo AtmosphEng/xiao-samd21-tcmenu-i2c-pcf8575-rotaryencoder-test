@@ -25,8 +25,8 @@ extern U8g2Drawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
 
 // Any externals needed by IO expanders, EEPROMs etc
-extern IoAbstractionRef ioexp_my8575Expansion;
 extern IoAbstractionRef ioexp_myI2CExpansion;
+extern IoAbstractionRef ioexp_my8575Expansion;
 
 // Global Menu Item exports
 extern AnalogMenuItem menuTcmUpSeconds;
