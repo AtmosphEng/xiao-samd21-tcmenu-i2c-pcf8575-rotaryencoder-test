@@ -1,4 +1,12 @@
 #include "generated/xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
+
+#define DEF_USE_8ENCODER true
+
+#if DEF_USE_8ENCODER
+void setupM5Stack8Encoder();
+void serviceM5Stack8Encoder();
+#endif
+
 //
 // xiao-samd21-tcmenu-i2c-pcf8575-rotaryencoder-test.ino
 // NOTE I2C expander changed from pcf8575 to mcp23017 for tcmenu support.
@@ -67,6 +75,10 @@ void setup() {
 
     setupMenu();
 
+#if DEF_USE_8ENCODER
+    setupM5Stack8Encoder();
+#endif
+
 	taskManager.scheduleFixedRate(1000, [] { // ms
 
         menuTcmUpSeconds.setCurrentValue(menuTcmUpSeconds.getCurrentValue() + 1); // increment seconds to show tcmenu run.
@@ -81,6 +93,9 @@ void setup() {
 
 void loop() {
     taskManager.runLoop();
+#if DEF_USE_8ENCODER
+    serviceM5Stack8Encoder();
+#endif
 
 } // loop
 
