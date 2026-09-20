@@ -8,14 +8,14 @@
     use elsewhere.
  */
 
-// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2026-09-20T14:18:29.972520Z.
+// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2026-09-20T14:42:11.015774600Z.
 
 #include <tcMenu.h>
 #include "xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
 #include "../ThemeMonoInverseBuilder.h"
 
 // Global variable declarations
-const  ConnectorLocalInfo applicationInfo = { "s218eIp 260920 2210", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
+const  ConnectorLocalInfo applicationInfo = { "s218eIp 260920 2242", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
 IoAbstractionRef ioexp_my8575Expansion = ioFrom8574(0x27, 2);
 IoAbstractionRef ioexp_myI2CExpansion = ioFrom23017(0x20, ACTIVE_LOW_OPEN, 2);
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, 5, 4);
