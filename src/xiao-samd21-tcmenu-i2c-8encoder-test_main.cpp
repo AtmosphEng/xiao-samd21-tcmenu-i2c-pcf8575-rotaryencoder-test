@@ -1,9 +1,9 @@
+#include "generated/xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
 //
 // xiao-samd21-tcmenu-i2c-pcf8575-rotaryencoder-test.ino
 // NOTE I2C expander changed from pcf8575 to mcp23017 for tcmenu support.
 // I2C uses SCL=5, SDA=4, MSC23017 on i2c address 0x20 and using interrupt 2. Defined in tcmDesigner.
 
-#include "generated/xiao-samd21-tcmenu-i2c-rotaryencoder-test_menu.h"
 
 #include <Wire.h> // For I2C communication
 #include <IoAbstraction.h> // For I/O abstraction, including I2C expanders

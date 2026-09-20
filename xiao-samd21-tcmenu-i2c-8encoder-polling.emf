@@ -71,7 +71,7 @@
     ],
     "lastThemeUuid": "396ED4DF-AD7B-4951-A848-A9E5838A549B",
     "applicationUUID": "f5a35aa5-3ae6-46fe-900a-7d6749bd049c",
-    "applicationName": "s21reIp 260916 2252",
+    "applicationName": "s218eIp 260920 1649",
     "lastProperties": [
       {
         "name": "DISPLAY_VARIABLE",
@@ -130,7 +130,7 @@
       },
       {
         "name": "SW_POLLING_MODE",
-        "latestValue": "SWITCHES_NO_POLLING",
+        "latestValue": "SWITCHES_POLL_EVERYTHING",
         "subsystem": "INPUT"
       },
       {
@@ -211,9 +211,9 @@
     "eepromDefinition": "",
     "authenticatorDefinition": "",
     "projectIoExpanders": [
-      "mcp23017:myI2CExpansion:32:2",
       "deviceIO:",
-      "pcf8574:my8575Expansion:39:2:false"
+      "pcf8574:my8575Expansion:39:2:false",
+      "mcp23017:myI2CExpansion:32:2"
     ],
     "menuInMenuCollection": {
       "menuDefinitions": []

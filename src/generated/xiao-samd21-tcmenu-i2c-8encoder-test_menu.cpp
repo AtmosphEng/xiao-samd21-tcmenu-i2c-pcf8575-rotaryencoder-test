@@ -8,16 +8,16 @@
     use elsewhere.
  */
 
-// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2026-09-16T14:53:06.064660600Z.
+// Generated for Arduino 32bit ARM by TcMenu 4.4.0 on 2026-09-20T08:54:24.016420800Z.
 
 #include <tcMenu.h>
-#include "xiao-samd21-tcmenu-i2c-rotaryencoder-test_menu.h"
+#include "xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
 #include "../ThemeMonoInverseBuilder.h"
 
 // Global variable declarations
-const  ConnectorLocalInfo applicationInfo = { "s21reIp 260916 2252", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
-IoAbstractionRef ioexp_myI2CExpansion = ioFrom23017(0x20, ACTIVE_LOW_OPEN, 2);
+const  ConnectorLocalInfo applicationInfo = { "s218eIp 260920 1649", "f5a35aa5-3ae6-46fe-900a-7d6749bd049c" };
 IoAbstractionRef ioexp_my8575Expansion = ioFrom8574(0x27, 2);
+IoAbstractionRef ioexp_myI2CExpansion = ioFrom23017(0x20, ACTIVE_LOW_OPEN, 2);
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C gfx(U8G2_R0, U8X8_PIN_NONE, 5, 4);
 U8g2Drawable gfxDrawable(&gfx);
 GraphicsDeviceRenderer renderer(30, applicationInfo.name, &gfxDrawable);
