@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <IoAbstraction.h>
 #include <tcMenu.h>
+#include "i2cM5Stack8encoder.h"
 #include "generated/xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
 
 namespace {
@@ -9,10 +10,11 @@ namespace {
 constexpr uint8_t M5_STACK_8ENCODER_ADDRESS = 0x41;
 constexpr uint8_t M5_STACK_8ENCODER_CH1 = 0;
 constexpr uint8_t M5_STACK_8ENCODER_VALUE_REGISTER = 0x00;
+constexpr uint8_t M5_STACK_8ENCODER_INCREMENT_REGISTER = 0x20;
 constexpr uint8_t M5_STACK_8ENCODER_BUTTON_REGISTER = 0x50;
-constexpr int32_t M5_STACK_8ENCODER_RAW_COUNTS_PER_CLICK = 2;
+constexpr int32_t M5_STACK_8ENCODER_SUBSTEPS_PER_DETENT = 2;
 constexpr uint32_t M5_STACK_8ENCODER_HOLD_TIME_MS = 400;
-constexpr uint32_t M5_STACK_8ENCODER_POLL_INTERVAL_MS = 20;
+constexpr uint32_t M5_STACK_8ENCODER_POLL_INTERVAL_MS = 100;
 
 class M5Stack8EncoderDevice {
 public:
@@ -23,13 +25,27 @@ public:
             return false;
         }
 
-        if (Wire.requestFrom(M5_STACK_8ENCODER_ADDRESS, static_cast<uint8_t>(length)) != length) {
+        Wire.requestFrom(M5_STACK_8ENCODER_ADDRESS, static_cast<uint8_t>(length));
+        if (Wire.available() < static_cast<int>(length)) {
             return false;
         }
 
         for (size_t index = 0; index < length; ++index) {
             data[index] = Wire.read();
         }
+        return true;
+    }
+
+    bool readEncoderIncrement(int32_t& value) {
+        uint8_t data[4];
+        if (!read(M5_STACK_8ENCODER_INCREMENT_REGISTER + M5_STACK_8ENCODER_CH1 * 4, data, sizeof(data))) {
+            return false;
+        }
+
+        value = static_cast<int32_t>(static_cast<uint32_t>(data[0])
+                | (static_cast<uint32_t>(data[1]) << 8)
+                | (static_cast<uint32_t>(data[2]) << 16)
+                | (static_cast<uint32_t>(data[3]) << 24));
         return true;
     }
 
@@ -46,19 +62,21 @@ public:
         return true;
     }
 
-    bool readButton(bool& pressed) {
+    bool pollCh1() {
         uint8_t value = 0;
-        if (!read(M5_STACK_8ENCODER_BUTTON_REGISTER + M5_STACK_8ENCODER_CH1, &value, 1)) {
+        int32_t encoderValue = 0;
+        bool pressed = false;
+        if (!read(M5_STACK_8ENCODER_BUTTON_REGISTER + M5_STACK_8ENCODER_CH1, &value, 1)
+                || !readEncoderValue(encoderValue)) {
             return false;
         }
         pressed = value == 0;
-        return true;
-    }
-
-    bool pollButton() {
-        bool pressed = false;
-        if (!readButton(pressed)) {
-            return true;
+        if (!haveEncoderValue) {
+            lastEncoderValue = encoderValue;
+            haveEncoderValue = true;
+        } else {
+            pendingIncrement += encoderValue - lastEncoderValue;
+            lastEncoderValue = encoderValue;
         }
 
         if (pressed && !buttonDown) {
@@ -78,6 +96,12 @@ public:
             buttonHeld = false;
         }
         return true;
+    }
+
+    int32_t takeIncrement() {
+        int32_t value = pendingIncrement;
+        pendingIncrement = 0;
+        return value;
     }
 
     bool processPendingButtonAction() {
@@ -101,65 +125,38 @@ private:
     bool pendingBack = false;
     bool pendingSelect = false;
     uint32_t buttonStartedAt = 0;
-};
-
-class M5Stack8EncoderIo : public BasicIoAbstraction {
-public:
-    explicit M5Stack8EncoderIo(M5Stack8EncoderDevice& device) : device(device) {}
-
-    void pinDirection(pinid_t, uint8_t) override {}
-
-    uint8_t readValue(pinid_t) override { return LOW; }
-
-    bool runLoop() override {
-        return device.pollButton();
-    }
-
-private:
-    M5Stack8EncoderDevice& device;
+    int32_t pendingIncrement = 0;
+    int32_t lastEncoderValue = 0;
+    bool haveEncoderValue = false;
 };
 
 class M5Stack8EncoderRotary : public RotaryEncoder {
 public:
     explicit M5Stack8EncoderRotary(M5Stack8EncoderDevice& device)
-            : RotaryEncoder([](int value) { menuMgr.valueChanged(value); }), device(device), lastValue(0), pendingDelta(0) {
-        setUserIntention(DIRECTION_ONLY);
+            : RotaryEncoder([](int value) { menuMgr.valueChanged(value); }), device(device) {
     }
 
     bool begin() {
-        if (!device.readEncoderValue(lastValue)) {
-            return false;
-        }
         return true;
     }
 
     void encoderChanged() override {
-        int32_t currentValue = 0;
-        if (!device.readEncoderValue(currentValue)) {
-            return;
-        }
-
-        int32_t delta = currentValue - lastValue;
-        lastValue = currentValue;
-        pendingDelta += delta;
-
-        if (pendingDelta >= M5_STACK_8ENCODER_RAW_COUNTS_PER_CLICK) {
+        pendingSubsteps += device.takeIncrement();
+        if (pendingSubsteps >= M5_STACK_8ENCODER_SUBSTEPS_PER_DETENT) {
             increment(1);
-            pendingDelta -= M5_STACK_8ENCODER_RAW_COUNTS_PER_CLICK;
-        } else if (pendingDelta <= -M5_STACK_8ENCODER_RAW_COUNTS_PER_CLICK) {
+            pendingSubsteps -= M5_STACK_8ENCODER_SUBSTEPS_PER_DETENT;
+        } else if (pendingSubsteps <= -M5_STACK_8ENCODER_SUBSTEPS_PER_DETENT) {
             increment(-1);
-            pendingDelta += M5_STACK_8ENCODER_RAW_COUNTS_PER_CLICK;
+            pendingSubsteps += M5_STACK_8ENCODER_SUBSTEPS_PER_DETENT;
         }
     }
 
 private:
     M5Stack8EncoderDevice& device;
-    int32_t lastValue;
-    int32_t pendingDelta;
+    int32_t pendingSubsteps = 0;
 };
 
 M5Stack8EncoderDevice encoderDevice;
-M5Stack8EncoderIo encoderIo(encoderDevice);
 M5Stack8EncoderRotary encoder(encoderDevice);
 
 void processM5Stack8EncoderButtonAction() {
@@ -172,6 +169,13 @@ void processM5Stack8EncoderButtonAction() {
 }
 
 void serviceM5Stack8Encoder() {
+    static uint32_t nextPoll = 0;
+    uint32_t now = millis();
+    if (static_cast<int32_t>(now - nextPoll) >= 0) {
+        nextPoll = now + M5_STACK_8ENCODER_POLL_INTERVAL_MS;
+        encoderDevice.pollCh1();
+        encoder.encoderChanged();
+    }
     processM5Stack8EncoderButtonAction();
 }
 
@@ -180,13 +184,8 @@ void setupM5Stack8Encoder() {
         return;
     }
 
-    taskManager.reset();
     switches.resetAllSwitches();
-    switches.init(&encoderIo, SWITCHES_NO_POLLING, true);
+    switches.init(ioUsingArduino(), SWITCHES_NO_POLLING, true);
     switches.setEncoder(0, &encoder);
-    taskManager.scheduleFixedRate(M5_STACK_8ENCODER_POLL_INTERVAL_MS, [] {
-        switches.runLoop();
-        encoder.encoderChanged();
-    });
-    renderer.initialise();
+    menuMgr.changeMenu();
 }

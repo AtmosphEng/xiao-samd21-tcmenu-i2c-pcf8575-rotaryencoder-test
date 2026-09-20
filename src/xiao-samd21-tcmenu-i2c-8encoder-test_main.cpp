@@ -1,11 +1,7 @@
 #include "generated/xiao-samd21-tcmenu-i2c-8encoder-test_menu.h"
+#include "i2cM5Stack8encoder.h"
 
 #define DEF_USE_8ENCODER true
-
-#if DEF_USE_8ENCODER
-void setupM5Stack8Encoder();
-void serviceM5Stack8Encoder();
-#endif
 
 //
 // xiao-samd21-tcmenu-i2c-pcf8575-rotaryencoder-test.ino
