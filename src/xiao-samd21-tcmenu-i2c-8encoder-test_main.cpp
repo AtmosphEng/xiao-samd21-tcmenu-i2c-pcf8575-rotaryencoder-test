@@ -2,7 +2,7 @@
 #include <i2cM5Stack8encoder.h>
 
 // 0 = M5_ENCODER_DISABLED, 1 = M5_ENCODER_MANUAL, 2 = M5_ENCODER_AUTO (probes I2C bus at startup)
-//#define M5_ENCODER_MODE M5_ENCODER_AUTO
+// #define M5_ENCODER_MODE M5_ENCODER_AUTO
 const int M5_ENCODER_MODE = M5_ENCODER_AUTO;
 
 //
@@ -15,6 +15,8 @@ const int M5_ENCODER_MODE = M5_ENCODER_AUTO;
 #include <tcMenu.h>				 // The tcMenu library
 
 bool myLEDState = true; // seeed xiao samd21 has led wired inverted. So its true for LED off.
+
+M5Stack8Encoder m5Stack8Encoder;
 
 #define PIN_XIAO_EXP_BUZZER 3
 
@@ -70,7 +72,9 @@ void setup() {
 
 	setupMenu();
 
-	setupM5Stack8Encoder((M5Stack8EncoderMode)M5_ENCODER_MODE);
+	if (M5_ENCODER_MODE != M5_ENCODER_DISABLED) {
+		m5Stack8Encoder.begin((M5Stack8EncoderMode)M5_ENCODER_MODE);
+	}
 
 	taskManager.scheduleFixedRate(1000, [] {																		// ms
 		menuTcmUpSeconds.setCurrentValue(menuTcmUpSeconds.getCurrentValue() + 1); // inc seconds to show tcmenu run.
@@ -85,8 +89,8 @@ void setup() {
 void loop() {
 	taskManager.runLoop();
 
-	if(M5_ENCODER_MODE != M5_ENCODER_DISABLED) {
-		serviceM5Stack8Encoder();
+	if (M5_ENCODER_MODE != M5_ENCODER_DISABLED) {
+		m5Stack8Encoder.service();
 	}
 
 } // loop
